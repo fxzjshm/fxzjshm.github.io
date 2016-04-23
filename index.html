@@ -1,44 +1,71 @@
-<!DOCTYPE html>
-<html>
+---
+layout: default
+---
+<div class="home">
+  <article class="home-feature-image" >
+  <div style="background-image: url('{{ site.baseurl }}/{{ site.theme.place_holder_image }}')"/>
+  <header style="background-image: url('{{ site.imageurl }}')">
+    <p class="call-out-content"> {{ site.theme.header_text }} </p>
+  </header>
+  </article>
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Fxzjshm&#39;s place : ">
+	<div class="posts">
+	{% for post in paginator.posts %}
+		{% include post_tags_category.html %}
+		<div class="post-teaser">
+		  <header>
+		    <h1>
+		      <a id="post-link-trans" class="post-link" href="{{ post.url | prepend: site.baseurl }}">
+		        {{ post.title }}
+		      </a>
+		    </h1>
+		    <p id="subtitletrans" class="subtitlecontainer">
+		      <a class="subtitle">{{ post.date | date: "%Y年%m月%-d日" }}</a>
+		      {% if post.author %} | <a class="subtitle" href="{{ site.baseurl }}/about/">{{ post.author }}</a>{% endif %}
+		      {% if post.category and post.tags %} | <a class="subtitle">{{ category_content }}</a> <a class="subtitle">{{ tags_content }}</a>{% endif %}
+		    </p>
+		  </header>
+		  <div class="excerpt">
+		  {% assign num = post.content | number_of_words %}
+		  {% if  num  < site.theme.visiblewords %}
+		    {{ post.content }}
+		  {% else %}
+		    {{ post.content | truncatewords: site.theme.visiblewords }}
+		    <p>
+		    <a class="text" href="{{ post.url | prepend: site.baseurl }}">
+		      {{ site.theme.str_continue_reading }}
+		    </a>
+		    </p>
+		  {% endif %}
+		  </div>
+		</div>
+		{% endfor %}
+	</div>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+	<div class="wp-pagenavi">
+	    <span class='pages'>第 {{ paginator.page }} 页，共 {{ paginator.total_pages }} 页</span>
 
-    <title>Fxzjshm&#39;s place</title>
-  </head>
+	    {% if paginator.previous_page %}
+	    	<a class="previouspostslink" rel="prev" href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}" > « </a>
+	    {% endif %}
 
-  <body>
+	      {% if paginator.page == 1 %}
+	        <span class="current">1</span>
+	      {% else %}
+	        <a class="page larger" href="/">1</a>
+	      {% endif %}
+	   
+	    {% for count in (2..paginator.total_pages) %}
+	        {% if count == paginator.page %}
+	          <span class="current">{{ count }}</span>
+	        {% else %}
+	          <a class="page larger" href="{{ site.baseurl }}/blog/page{{ count }}">{{ count }}</a>
+	        {% endif %}
+	    {% endfor %}
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/fxzjshm">View on GitHub</a>
+	    {% if paginator.next_page %}
+	    	<a class="nextpostslink" rel="next" href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}" > » </a>
+	    {% endif %}
 
-          <h1 id="project_title">Fxzjshm&#39;s place</h1>
-          <h2 id="project_tagline"></h2>
-
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <p>This is my site on Github. I will write my experiences here, maybe.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
-  </body>
-</html>
+	</div>
+</div>
