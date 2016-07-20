@@ -2,4 +2,5 @@ Gemfile.lock
 _site/
 .sass-cache/
 ruby_install_by_rvm.sh
-
+bundle/
+.bundle/
