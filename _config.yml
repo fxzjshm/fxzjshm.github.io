@@ -6,13 +6,13 @@ imageurl: "https://source.unsplash.com/category/nature/2600x500" #"https://unspl
 # THEME-SPECIFIC CONFIGURATION
 theme:
   # Meta
-  title: Fxzjshm's place on Github 
+  title: Fxzjshm's place # on Github 
   #avatar: avatar.png
   hometitle: Home #display on navigation menu.
   yoursitetitle: #YOUR LOGO
   gravatar: # Email MD5 hash
   description: #"used by search engines" # used by search engines
-  visiblewords: 300
+  visiblewords: 25
   # Header and footer text
   header_text: #
     #Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -20,7 +20,7 @@ theme:
   header_text_feature_image: img/sample_feature_img.png
   place_holder_image: img/sample_feature_img.png
   footer_text: >
-   <p style="color:white"><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">fxzjshm.github.io</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://fxzjshm.github.io/" property="cc:attributionName" rel="cc:attributionURL">fxzjshm</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p> 
+   # <p style="color:white"><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">fxzjshm.github.io</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://fxzjshm.github.io/" property="cc:attributionName" rel="cc:attributionURL">fxzjshm</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p> 
 
   # Icons
   rss: false
@@ -28,10 +28,10 @@ theme:
   behance:
   bitbucket:
   dribbble:
-  facebook:
+  facebook: "fxzjshm"
   flickr:
   github: "fxzjshm"
-  weibo: 
+  weibo: "fxzjshm"
   google_plus:
   instagram:
   linkedin:  # Full URL
@@ -54,9 +54,9 @@ theme:
   str_follow_on: "Follow on"
   str_rss_follow: "Follow RSS feed"
   str_email: "Email"
-  #str_next: "Next"
-  #str_prev: "Prev"
-  str_continue_reading: "Continue Reading..."
+  str_next: "-->" #"Next"
+  str_prev: "<--" #"Prev"
+  str_continue_reading: "..." #"Continue Reading..."
 
   # Colours, typography and padding
   # Open the "_sass > base" folder, and open "_variables.scss"

@@ -1,6 +1,6 @@
 ---
 layout: blog_by_category
-title: '其他'
+title: 'Other'
 category: other
 permalink: /Other/
 ---
