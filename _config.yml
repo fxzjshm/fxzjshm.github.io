@@ -5,9 +5,10 @@ imageurl: "https://source.unsplash.com/category/nature/2600x500" #"https://unspl
 encoding: UTF-8
 
 # THEME-SPECIFIC CONFIGURATION
-theme:
+# theme: # this tag has been used somewhere
+themeconfig:
   # Meta
-  title: Fxzjshm's place # on Github 
+  title: Fxzjshm's place # on Github
   #avatar: avatar.png
   hometitle: Home #display on navigation menu.
   yoursitetitle: #YOUR LOGO
@@ -35,7 +36,7 @@ theme:
   google_plus:
   instagram:
   linkedin:  # Full URL
-  pinterest: 
+  pinterest:
   reddit:
   soundcloud:
   stack_exchange:  # Full URL
@@ -78,10 +79,9 @@ sechby:
 
 # BUILD SETTINGS
 markdown: kramdown
-highlighter: rouge
+# highlighter: rouge
 sass:
   sass_dir: _sass
   style: :compressed
-
 plugins:
   - jekyll-paginate

@@ -27,10 +27,10 @@ layout: default
 		  </header>
 		  <div class="excerpt">
 		  {% assign num = post.content | number_of_words %}
-		  {% if  num  < site.theme.visiblewords %}
+		  {% if  num  < site.themeconfig.visiblewords %}
 		    {{ post.content }}
 		  {% else %}
-		    {{ post.content | truncatewords: site.theme.visiblewords }}
+		    {{ post.content | truncatewords: site.themeconfig.visiblewords }}
 		    <p>
 		    <a class="text" href="{{ post.url | prepend: site.baseurl }}">
 		      {{ site.theme.str_continue_reading }}
