@@ -2,6 +2,7 @@
 baseurl: "" # Set it to "" if use for personal site. The subpath of your site, e.g. /blog/
 url: "http://fxzjshm.github.io" # the base hostname & protocol for your site
 imageurl: "https://source.unsplash.com/category/nature/2600x500" #"https://unsplash.it/2600/500?random"
+encoding: UTF-8
 
 # THEME-SPECIFIC CONFIGURATION
 theme:
