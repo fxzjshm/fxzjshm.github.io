@@ -1,0 +1,132 @@
+---
+layout: post
+title: eGPU using USB4 on AMD laptop
+date: 2022-7-18
+author: Fxzjshm
+category: Other
+tags: []
+---
+
+<!-- !DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 7.3.5.2 (Linux)"/>
+	<meta name="created" content="2022-07-18T12:34:44.322387408"/>
+	<meta name="changed" content="2022-07-18T12:52:17.745430012"/>
+	<style type="text/css">
+		@page { size: 21cm 29.7cm; margin: 2cm }
+		p { line-height: 115%; margin-bottom: 0.25cm; background: transparent }
+		strong { font-weight: bold }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+	</style>
+</head>
+<body lang="zh-CN" link="#000080" vlink="#800000" dir="ltr" -->
+<p>Post at <a href="https://egpu.io/forums/builds/2022-16-hp-elitebook-865-g9-r6k8ch-radeon-vii-32gbps-usb4-razor-core-v2-ubuntu-22-04-win11/">https://egpu.io/forums/builds/2022-16-hp-elitebook-865-g9-r6k8ch-radeon-vii-32gbps-usb4-razor-core-v2-ubuntu-22-04-win11/</a></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><strong><font color="#3366ff"><font size="4" style="font-size: 13pt">System
+specs </font></font></strong>(model inc screen size, CPU, iGPU, dGPU,
+operating system which eGPU is being used)</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">2022
+16&quot; HP Elitebook 865 G9 (a.k.a. HP ZHAN X 2022 Ryzen Version)</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+CPU: AMD Ryzen 7 PRO 6850HS with Radeon Graphics</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+iGPU: AMD Radeon™ 680M (gfx1035)</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+Memory: 16GB DDR5-4800</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+OS: Windows 11 Home Edition (pre-installed) / Ubuntu 22.04 (manually
+installed, with kernel 5.17)</span></font></font></p>
+<p>&nbsp;</p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><strong><font color="#3366ff"><font size="4" style="font-size: 13pt">eGPU
+hardware</font></font></strong> (eGPU enclosure, video card, any
+third-party <a href="https://egpu.io/go/tb3cable" target="_self">TB3
+cable</a>, any custom mods)</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Enclosure:
+(Second hand) Razer Core V2</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">eGPU:
+AMD Radeon VII (gfx906)</span></font></font></p>
+<p>&nbsp;</p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><strong><font color="#3366ff"><font size="4" style="font-size: 13pt">Hardware
+pictures </font></font></strong>(note: <a href="https://egpu.io/forums/feedback-suggestions/q-why-cant-i-edit-my-posts-a-block-if-have-less-than-5-total-posts/">require
+5+ posts</a> for &quot;attach files&quot; button to appear. Or can
+link from say <a href="http://imgur.com/">http://imgur.com &nbsp; </a>BUT
+post the .jpg/.png image file rather than a link to it)</span></font></font></p>
+<img src="/img/2022/IMG_20220630_183510-edit.jpg" />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><strong><font color="#3366ff"><font size="4" style="font-size: 13pt">Installation
+steps</font></font></strong> (what did you do to get it all going?)</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+Boot the laptop and set up the pre-installed Win 11</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+Install eGPU into the enclosure</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+Connect the enclosure to the USB4 port of the laptop, check the
+device list, the eGPU shows (something like &quot;Microsoft Basic
+Display Adapter&quot;)</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+I don't know why the pre-installed AMD display driver cannot identify
+the eGPU, so download the driver from amd.com, version 22.5.2 or
+later</span></font></font></p>
+<p>&nbsp;&nbsp;&nbsp; <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+also tried 22.5.1 (which was marked &quot;Recommended&quot;) but it
+doesn't support the iGPU</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+Install the driver (I tried with reset settings option ticked, maybe
+unnecessary)</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+After rebooting it works in Win11.</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">---</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+As to Ubuntu 22.04, install package <font color="#000000"><font face="monospace"><span style="background: #ffffff">linux-o</span></font></font><font color="#686868"><font face="monospace"><span style="background: #ffffff">em-22.04
+</span></font></font>for newer kernel (refer to <a href="https://www.phoronix.com/scan.php?page=news_item&amp;px=AMDGPU-More-USB4-DC" target="true">this
+phoronix's article</a>)</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+( If played with vfio PCIe pass-through before, check settings like
+<font face="monospace"><span style="background: #ffffff">vfio-pci.ids=1002:66af,1002:ab20
+</span></font>and disable them )</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+Shutdown, connect the cable and boot </span></font></font>
+</p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+It should work now.</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+NOTICE: for unknown reason, cltests reports CPU-&gt;GPU copy
+bandwidth is only ~0.9 GB/s</span></font></font></p>
+<p>&nbsp;</p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><strong><font color="#3366ff"><font size="4" style="font-size: 13pt">Benchmarks
+</font></font></strong>(Include a <a href="https://cuda-z.sourceforge.net/" target="_self">CUDA-Z</a>
+or <a href="https://www.aida64.com/downloads" target="_self">AIDA64</a>
+<a href="https://egpu.io/external-gpu-implementations-table/#perf">bandwidth</a>
+pic. Optional: <a href="https://benchmark.unigine.com/valley">Valley</a>,
+<a href="https://www.futuremark.com/benchmarks">3dmark</a>, noting if
+it's on internal/external LCD )</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">
+<img src="/img/2022/2022-07-18-aida64-benchmark.png" />
+<br />
+<img src="/img/2022/Screenshot_20220718_152347.png" />
+</span></font></font></p>
+<p>&nbsp;</p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><strong><font color="#3366ff"><font size="4" style="font-size: 13pt">Comments
+</font></font></strong>(eg: how has the eGPU improved your workflow
+or gaming)</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">I'm
+learning scientific computing on GPU. With Radeon VII, a ROCm
+development environment can be set up.</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Although
+this build isn't intended for gaming, I also tried some on interal
+LCD without problem:</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+R.U.S.E. on Win 11</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">*
+Simcity 2013 on wine 7.x on Ubuntu 22.04</span></font></font></p>
+<p><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">Finally,
+eGPU on AMD laptops can be built easily thanks to USB4.</span></font></font></p>
+<p><br/>
+<br/>
+
+</p>
+<!--/body>
+</html-->
