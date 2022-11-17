@@ -11,6 +11,10 @@ tags: [Linux]
 
 ---
 
+Update: seems fixed on Linux kernel 6.0.9 / 6.1, commit [1598bfa](https://github.com/torvalds/linux/commit/1598bfa8e1faa932de42e1ee7628a1c4c4263f0a) "platform/x86: hp_wmi: Fix rfkill causing soft blocked wifi"
+
+---
+
 Recently Windows auto-updated the BIOS of my laptop HP Elitebook 865 G9 to (U82) 01.02.01 Rev.A, 
 then in Linux the wifi and bluetooth device keeps on and off, seems 1-2 time(s) per second,
 and character `^@` of unknown source keeps being inputed, even in emergency mode 
