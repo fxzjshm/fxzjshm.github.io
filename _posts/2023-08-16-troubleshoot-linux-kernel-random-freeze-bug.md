@@ -103,7 +103,7 @@ sudo insmod oomk.ko memory_size_gb=300 fragsize=4097
 ```
 
 ### 问题解决
-* 升级内核到 `sudo insmod oomk.ko memory_size_gb=3 fragsize=4097` 并重启, 用此模块确认这个问题已经修复
+* 升级内核到 `3.10.0-1160.95.1.el7.x86_64` 并重启, 用此模块确认这个问题已经修复
 * 目前尚无进一步的异常
 
 ---
@@ -140,16 +140,16 @@ It can operate normally after reboot, but still freeze after several hours or da
 ### Investigation
 <!-- more -->
 * No unexpented things found in `dmesg` and `journalctl`
-* Mouse input in GUI is laggy; there's delay from pressing Num Lock in keyboard to correspond LED switch state, so maybe related to kernel interrupt
-* All observation and data processing are terminated but mouse & keyboard inputs are still laggy, so not related to high load of server
-* As kernel error log related to network interface, disconnect from upstream data source, no change
-* Realized that another CentOS 7 server was also unresponsive (cannot remotely connect) after not used for ~10 days, still suspect related to kernel
-* Search "CentOS 7 kernel free" and get some links:
+* Mouse input in GUI was laggy; there was delay from pressing Num Lock in keyboard to correspond LED switch state, so maybe related to kernel interrupt
+* All observation and data processing were terminated but mouse & keyboard inputs were still laggy, so not related to high load of server
+* As kernel error log is related to network interface, disconnect from upstream data source, nothing changed
+* Realized that another CentOS 7 server had been also unresponsive (cannot remotely connect) after not used for ~10 days, still suspected related to kernel
+* Searched "CentOS 7 kernel free" and got some links:
   * CentOS 7 freezing -- Unix & Linux Stack Exchange <https://unix.stackexchange.com/questions/534010/centos-7-freezing/558093#558093>
   * freezes on CentOS 7 -- CentOS <https://forums.centos.org/viewtopic.php?t=51455>
     * The link <http://bugs.centos.org/view.php?id=7414> in that page seems unable to connect?
-* Based on these links, going to upgrade kernel
-* When reading kernel change log, notice some information that related to kernel error stack trace above :
+* Based on these links, was going to upgrade kernel
+* When reading kernel change log, noticed some information that related to kernel error stack trace above :
   * kernel-3.10.0-1160.95.1.el7.x86_64.rpm CentOS 7 Download @ pkgs.org <https://centos.pkgs.org/7/centos-updates-x86_64/kernel-3.10.0-1160.95.1.el7.x86_64.rpm.html>
 ```
 2023-02-02 - Rado Vrbovsky <rvrbovsk@redhat.com> [3.10.0-1160.86.1.el7]
@@ -159,9 +159,9 @@ It can operate normally after reboot, but still freeze after several hours or da
 - mm: page_alloc: fix ref bias in page_frag_alloc() for 1-byte allocs (Rafael Aquini) [2141062]
 ...
 ```
-* Search "page_frag_alloc" then find original bug report
+* Searched "page_frag_alloc" then found original bug report
   * Bug 2104445 - RHEL9.1: in low memory conditions, page_frag_alloc may corrupt the memory.  <https://bugzilla.redhat.com/show_bug.cgi?id=2104445>
-* Reproduce this bug using attached kernel mod:
+* Reproduced this bug using attached kernel mod:
 ```bash
 sudo insmod oomk.ko memory_size_gb=300 fragsize=4097
 ```
@@ -202,5 +202,5 @@ sudo insmod oomk.ko memory_size_gb=300 fragsize=4097
 ```
 
 ### Solution
-* Upgrade kernel to `sudo insmod oomk.ko memory_size_gb=3 fragsize=4097` and reboot, confirm this bug is fixed using test kernel module
+* Upgraded kernel to `3.10.0-1160.95.1.el7.x86_64` and reboot; confirmed this bug is fixed using test kernel module
 * No further error noticed till now
