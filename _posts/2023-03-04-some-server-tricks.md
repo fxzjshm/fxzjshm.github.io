@@ -13,6 +13,7 @@ Credit: Chenchen Miao and Cijie Zhang
 1. 记下机箱标签上的 iLO 账号与密码 / remember username and password of iLO which is on the label of server
 ![](/img/2023/some-server-tricks/1677858241518.avif)
 2. 第一次启动需要接上屏幕, 在引导阶段会显示 iLO 的 IP 地址 / screen seems required on first boot, IP address of iLO will show when booting
+<!-- more -->
 3. 用其他设备以 HTTP(S) 访问该地址, 以上述账号密码登录即可使用 iLO 远程操作与监控该服务器 / visit this address via HTTP(s) protocol using another device, and then login with username and password said above to operate and monitor this server remotely
 ![](/img/2023/some-server-tricks/Screenshot_20230303_162619.png)
 

@@ -7,11 +7,11 @@ category: Other
 tags: [Linux]
 ---
 
-**TL;DR** The temporary fix is either blacklist the kernel module `hp_wmi` currently, or comment out codes that provides rfkill function in that module.
+Update: seems fixed on Linux kernel 6.0.9 / 6.1, commit [1598bfa](https://github.com/torvalds/linux/commit/1598bfa8e1faa932de42e1ee7628a1c4c4263f0a) "platform/x86: hp_wmi: Fix rfkill causing soft blocked wifi"
 
 ---
 
-Update: seems fixed on Linux kernel 6.0.9 / 6.1, commit [1598bfa](https://github.com/torvalds/linux/commit/1598bfa8e1faa932de42e1ee7628a1c4c4263f0a) "platform/x86: hp_wmi: Fix rfkill causing soft blocked wifi"
+**TL;DR** The temporary fix is either blacklist the kernel module `hp_wmi` currently, or comment out codes that provides rfkill function in that module.
 
 ---
 
@@ -19,6 +19,8 @@ Recently Windows auto-updated the BIOS of my laptop HP Elitebook 865 G9 to (U82)
 then in Linux the wifi and bluetooth device keeps on and off, seems 1-2 time(s) per second,
 and character `^@` of unknown source keeps being inputed, even in emergency mode 
 (which make it almost impossible to type in password for root, thus cannot access root shell.)
+
+<!-- more -->
 
 I tried to boot into different kernels and found that both 5.19.x and 5.17.0.1016.15 (current `linux-oem-22.04a`) have this problem, but 5.15.0.47.47 (`linux-generic` of Ubuntu 22.04) not. 
 

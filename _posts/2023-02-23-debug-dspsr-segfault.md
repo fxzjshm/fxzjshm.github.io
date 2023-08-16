@@ -28,6 +28,7 @@ dsp::Archiver::finish archive '13835058401541322426_128.rf' with 1 integrations
 ```
 
 ## Analyze
+<!-- more -->
 Recompile dspsr & psrchive with debug info (`CFLAGS=-g`, `CXXFLAGS=-g`), then run with gdb, segmentation fault is again triggered:
 ```
 Program received signal SIGSEGV, Segmentation fault.

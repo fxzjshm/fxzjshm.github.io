@@ -57,7 +57,7 @@ themeconfig:
   str_email: "Email"
   str_next: "-->" #"Next"
   str_prev: "<--" #"Prev"
-  str_continue_reading: "..." #"Continue Reading..."
+  str_continue_reading: "• • •  >>" #"Continue Reading..."
 
   # Colours, typography and padding
   # Open the "_sass > base" folder, and open "_variables.scss"
@@ -85,3 +85,6 @@ sass:
   style: :compressed
 plugins:
   - jekyll-paginate
+
+# https://stackoverflow.com/questions/16422933/how-do-i-use-markdownify-in-jekyll-to-show-an-excerpt-on-the-index/18007879#18007879
+excerpt_separator: <!-- more -->

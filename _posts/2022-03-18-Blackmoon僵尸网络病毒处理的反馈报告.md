@@ -16,6 +16,7 @@ tags: [virus, Blackmoon]
 ## 排查过程
 * 利用“打开文件所在位置”功能进入上述两进程所在文件夹 "C:\Users\\\${USERNAME}\AppData\Local\Temp\BD17FBAC.tmp"（其中 "${USERNAME}" 为用户名），发现两上述进程、一伪装成桌面配置文件的程序配置文件 "desktop.ini" 、程序日志 "~1.log"。
 * 利用 Process Explorer 发现 Nidispla2.exe 是 ssAup.exe 子进程，ssAup.exe 为 explorer.exe 的子进程，遂重启 explorer.exe，但发现 ssAup.exe 自行启动，遂开始查找可能自启的位置
+<!-- more -->
 * 在任务管理器内启动选项卡未发现异常
 * 在注册表内已知的可能自动加载程序的路径查找可疑程序，无果
 * 由于计划任务无法打开，利用命令行工具 "schtasks" 对计划任务进行清理，无果

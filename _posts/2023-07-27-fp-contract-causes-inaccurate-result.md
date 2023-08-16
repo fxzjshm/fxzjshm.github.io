@@ -13,11 +13,13 @@ An example is evaluating phase delay of radio wave in plasma caused by electrody
 
 ![df64_double_debug.svg]({{ "/img/2023/fp-contract-causes-inaccurate-result/df64_double_debug.svg" | prepend: site.baseurl | prepend: site.url }})
 
-Difference of result given by `df64` & `double` under Debug configuration, tested on NVIDIA RTX A4000
+*Difference of result given by `df64` & `double` under Debug configuration, tested on NVIDIA RTX A4000*
 
 ![df64_double_release.svg]({{ "/img/2023/fp-contract-causes-inaccurate-result/df64_double_release.svg" | prepend: site.baseurl | prepend: site.url }})
 
-Difference of result given by `df64` & `double` under Release configuration, tested on NVIDIA RTX A4000
+*Difference of result given by `df64` & `double` under Release configuration, tested on NVIDIA RTX A4000*
+
+<!-- more -->
 
 This is most likely caused by some inappropriate optimization, and after some investigation this post on NVIDIA forum ["Different results in Debug and Release mode compile"](https://forums.developer.nvidia.com/t/different-results-in-debug-and-release-mode-compile/39860/2) leads to fused multiply add (FMA) operations, then this Stack Overflow post ["clang/gcc only generates fma with -ffast-math; why?"](https://stackoverflow.com/questions/55974090/clang-gcc-only-generates-fma-with-ffast-math-why) gives some clue: `#pragma STDC FP_CONTRACT ON/OFF`.
 
