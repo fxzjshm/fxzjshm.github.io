@@ -1,5 +1,9 @@
 ﻿# fxzjshm.github.io
-The theme is from [fengzhichu-theme][1].   
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">fxzjshm.github.io</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://fxzjshm.github.io/" property="cc:attributionName" rel="cc:attributionURL">fxzjshm</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
+![CC BY-NC](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc.svg)
+
+[fxzjshm.github.io](https://fxzjshm.github.io) by [fxzjshm](https://github.com/fxzjshm) is licensed under [Creative Commons Attribution-NonCommercial 4.0 International Public License](https://creativecommons.org/licenses/by-nc/4.0/)
+
+The theme is from [fengzhichu-theme][1], licensed under The MIT License.
 
   [1]: https://github.com/fengzhichu/fengzhichu-theme/
