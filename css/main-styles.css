@@ -12,7 +12,7 @@ article, aside, footer, header, hgroup, nav, section { display: block; }
 
 /* Basic Styles */
 	/* Body */
-	body { font-family: 'Open Sans', Arial, sans-serif; font-size: 14px; color: #333; background-color: #fff; line-height: 1.7em; font-weight: 500; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+	body { font-family: 'Open Sans', Arial, sans-serif; font-size: 14px; color: #1f1e33; background-color: #fff; line-height: 1.7em; font-weight: 500; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 	body.et_non_fixed_nav.et_transparent_nav.et_boxed_layout #page-container,
 	body.et_fixed_nav.et_boxed_layout #page-container { padding-top: 54px; }
 	body.page-template-page-template-blank-php #page-container { padding-top: 0 !important; }
@@ -39,7 +39,7 @@ article, aside, footer, header, hgroup, nav, section { display: block; }
 	embed, iframe, object, video { max-width: 100%; }
 
 	/* Headers */
-	h1, h2, h3, h4, h5, h6 { color: #333; padding-bottom: 10px; line-height: 1em; font-weight: 500; }
+	h1, h2, h3, h4, h5, h6 { color: #1f1e33; padding-bottom: 10px; line-height: 1em; font-weight: 500; }
 	h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; font-family: "Microsoft YaHei" !important;}
 	h1 { font-size: 30px; }
 	h2 { font-size: 26px; }
