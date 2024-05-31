@@ -4,7 +4,7 @@ title: 安装 CASPER 工具链的注意事项 | Notes for setting up CASPER Tool
 date: 2024-05-14
 author: Fxzjshm
 category: Radio Astronomy
-tags: [Linux, Ubuntu]
+tags: [Linux, Ubuntu, CASPER, SNAP]
 ---
 
 **Manual English translation available below.**
@@ -15,7 +15,8 @@ tags: [Linux, Ubuntu]
 
 ## 安装 Vivado 2021.1
 * 安装 `ncurses-devel`, `ncurses-compat-libs` (RHEL 8 或衍生版本) 或 `libncurses5-dev` `libtinfo-dev` `libtinfo5` (Ubuntu 20.04) 以安装 libncurses.so & libtinfo.so.5 两个库; 否则安装后的 "list system devices" 卡死无法结束, 可在安装器输出中看到类似 "cannot load libncurses.so.5: no such file or directory"
-* 安装 Vivado 2021.1
+* 安装 Vivado 2021.1 & Vitis 2021.1
+  * 注意 2021.1 对应的 Model Composer 可能不支持 RHEL 8.x (检测系统后拒绝启动)
 
 ## 安装 Matlab 2021a
 * 不要安装 "Matlab Compiler" and "Matlab Compiler SDK" 否则调用 Vivado 时会卡死
@@ -53,7 +54,8 @@ mv binutils-2.26 binutils-2.26-bak
 
 ## Install Vivado 2021.1
 * install `ncurses-devel`, `ncurses-compat-libs` (RHEL 8-like) or `libncurses5-dev` `libtinfo-dev` `libtinfo5` (Ubuntu 20.04) for libncurses.so & libtinfo.so.5; otherwise post-install "list system devices" never finishes, install log shows something like "cannot load libncurses.so.5: no such file or directory"
-* install Vivado 2021.1
+* install Vivado 2021.1 & Vitis 2021.1
+  * note that Model Composer in 2021.1 seems not supporting RHEL 8.x (refuse to start after detecting OS)
 
 ## Install Matlab 2021a
 * do not install "Matlab Compiler" and "Matlab Compiler SDK" otherwise Vivado will stuck
