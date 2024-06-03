@@ -34,7 +34,7 @@ mv libgmp.so.10.0.3 libgmp.so.10.0.3.original
 ln -s /usr/lib/x86_64-linux-gnu/libgmp.so.10 libgmp.so.10.0.3
 ```
 * 对 `/opt/Xilinx/Vivado/2021.1/lib/lnx64.o/Ubuntu` 里的 `libgmp.so.10.0.3` 采取相同做法
-* Vivado Sysgen 需要 Qt4, 可以使用 ppa:ubuntuhandbook1/ppa
+* Vivado Sysgen 需要 Qt4 (可使用 `ldd sysgensockgui` 检查情况, 文件位于 `/opt/Xilinx/Vivado/2021.1/bin/unwrapped/lnx64.o/`), 可以使用 ppa:ubuntuhandbook1/ppa, 需要安装 `libqt4-network`, `libqt4-xml`, `libqtcore`, `libqtgui`, `qt4-dev-tools`, `qt4-default`
 * 使用 simulink 模拟时, Vivado 自带的 binutils 太老导致 Ubuntu 20.04 的 gcc 无法使用 ("no such instruction: endbr64"), 所以不要使用这个 binutils (在 Matlab 里 `!which as` 可见位置):
 ```bash
 cd /opt/Xilinx/Vivado/2021.1/tps/lnx64
@@ -72,7 +72,7 @@ mv libgmp.so.10.0.3 libgmp.so.10.0.3.original
 ln -s /usr/lib/x86_64-linux-gnu/libgmp.so.10 libgmp.so.10.0.3
 ```
 * same for the one in `/opt/Xilinx/Vivado/2021.1/lib/lnx64.o/Ubuntu`
-* install Qt4 for Vivado Sysgen: ppa:ubuntuhandbook1/ppa
+* install Qt4 for Vivado Sysgen (which can be checked by `ldd sysgensockgui` which is in `/opt/Xilinx/Vivado/2021.1/bin/unwrapped/lnx64.o/`): ppa:ubuntuhandbook1/ppa, need to install `libqt4-network`, `libqt4-xml`, `libqtcore`, `libqtgui`, `qt4-dev-tools`, `qt4-default`
 * when simulating in simulink, binutils bundled by Vivado is too old and gcc 9 of Ubuntu 20.04 will complain ("no such instruction: endbr64"), so don't use it (found by `!which as` in Matlab):
 ```bash
 cd /opt/Xilinx/Vivado/2021.1/tps/lnx64
