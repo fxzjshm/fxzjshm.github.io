@@ -17,6 +17,7 @@ tags: [Linux, Ubuntu, CASPER, SNAP]
 * 安装 `ncurses-devel`, `ncurses-compat-libs` (RHEL 8 或衍生版本) 或 `libncurses5-dev` `libtinfo-dev` `libtinfo5` (Ubuntu 20.04) 以安装 libncurses.so & libtinfo.so.5 两个库; 否则安装后的 "list system devices" 卡死无法结束, 可在安装器输出中看到类似 "cannot load libncurses.so.5: no such file or directory"
 * 安装 Vivado 2021.1 & Vitis 2021.1
   * 注意 2021.1 对应的 Model Composer 可能不支持 RHEL 8.x (检测系统后拒绝启动)
+* 获取 Vivado license 放到 `~/.Xilinx/Xilinx.lic`
 
 ## 安装 Matlab 2021a
 * 不要安装 "Matlab Compiler" and "Matlab Compiler SDK" 否则调用 Vivado 时会卡死
@@ -56,6 +57,7 @@ mv binutils-2.26 binutils-2.26-bak
 * install `ncurses-devel`, `ncurses-compat-libs` (RHEL 8-like) or `libncurses5-dev` `libtinfo-dev` `libtinfo5` (Ubuntu 20.04) for libncurses.so & libtinfo.so.5; otherwise post-install "list system devices" never finishes, install log shows something like "cannot load libncurses.so.5: no such file or directory"
 * install Vivado 2021.1 & Vitis 2021.1
   * note that Model Composer in 2021.1 seems not supporting RHEL 8.x (refuse to start after detecting OS)
+* get Vivado license and move to `~/.Xilinx/Xilinx.lic`
 
 ## Install Matlab 2021a
 * do not install "Matlab Compiler" and "Matlab Compiler SDK" otherwise Vivado will stuck
@@ -71,7 +73,7 @@ cd /opt/Xilinx/Model_Composer/2021.1/lib/lnx64.o/Ubuntu
 mv libgmp.so.10.0.3 libgmp.so.10.0.3.original
 ln -s /usr/lib/x86_64-linux-gnu/libgmp.so.10 libgmp.so.10.0.3
 ```
-* same for the one in `/opt/Xilinx/Vivado/2021.1/lib/lnx64.o/Ubuntu`
+* same for the one in `/opt/Xilinx/Vivado/2021.1/lib/lnx64.o/Ubuntu`, `/opt/Xilinx/Vivado/2021.1/lib/lnx64.o/`
 * install Qt4 for Vivado Sysgen (which can be checked by `ldd sysgensockgui` which is in `/opt/Xilinx/Vivado/2021.1/bin/unwrapped/lnx64.o/`): ppa:ubuntuhandbook1/ppa, need to install `libqt4-network`, `libqt4-xml`, `libqtcore`, `libqtgui`, `qt4-dev-tools`, `qt4-default`
 * when simulating in simulink, binutils bundled by Vivado is too old and gcc 9 of Ubuntu 20.04 will complain ("no such instruction: endbr64"), so don't use it (found by `!which as` in Matlab):
 ```bash
