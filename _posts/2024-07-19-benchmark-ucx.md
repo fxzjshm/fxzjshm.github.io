@@ -22,7 +22,7 @@ export UCX_PROTO_INFO=y
 ./contrib/configure-release --prefix=/opt/ucx --enable-mt --with-verbs --enable-devel-headers --enable-examples --enable-cma --with-cuda=/usr/local/cuda --with-rocm=/opt/rocm
 ```
 
-## After tuning: RoCEv2 w1 <-> w2 <-> w3 <-> w4 <-> w5 <-> w1: 10125 MB/s
+## host memory: RoCEv2 w1 <-> w2 <-> w3 <-> w4 <-> w5 <-> w1: 10125 MB/s
 * move network controller to appropriate PCIe position
 * enable RoCEv2 (priority flow control, etc.) on switch
   * e.g. on Dell switch we used, see <https://www.dell.com/support/manuals/en-us/dell-emc-smartfabric-os10/smartfabric-os-user-guide-10-5-2-6/configure-roce-on-the-switch?guid=guid-ddfa4455-8f64-4014-8543-ceb6719c904d&lang=en-us>
@@ -59,12 +59,150 @@ If add another w1 <-> w2, it jitters much:
 ```
 
 ## GPU RDMA: pursai-9654 <-> gpu8
-Sadly, due to limited device available, only conventional NVIDIA GPU + Mellanox NIC can be tested for now.
-
-Notice, this requires PCIe switch & professional GPU for NVIDIA.
+Notice, this may require PCIe switch & professional GPU for NVIDIA.
 Not sure situation for AMD GPU.
 
-### 1. Check if `nvidia_peermem` is correctly loaded
+### 1. ROCm Platform
+#### 1. Check Firmware Setup
+Enable PCIe resizable bar & tune MMIO address setup, refer to: <https://github.com/openucx/ucx/wiki/Build-and-run-ROCM-UCX-OpenMPI>
+
+Bar address of GPUs should be < 44 bits for gfx900 / gfx906 devices, otherwise segmentation fault will still happen.
+
+#### 2. run the test
+```bash
+/opt/ucx/bin/ucx_perftest -c 0
+```
+```bash
+/opt/ucx/bin/ucx_perftest -t ucp_get 10.0.1.2 -s 1073741824 -c 3 -w 3 -n 10000 -m rocm
+```
+gives
+```
++--------------+--------------+------------------------------+---------------------+-----------------------+
+|              |              |        latency (usec)        |   bandwidth (MB/s)  |  message rate (msg/s) |
++--------------+--------------+----------+---------+---------+----------+----------+-----------+-----------+
+|    Stage     | # iterations | 50.0%ile | average | overall |  average |  overall |  average  |  overall  |
++--------------+--------------+----------+---------+---------+----------+----------+-----------+-----------+
+[1722588781.634052] [ps:655046:0]         libperf.c:2090 UCX  DIAG  UCT tests also copy one-byte value from host memory to rocm send memory, which may impact performance results
+[1722588781.634062] [ps:655046:0]         libperf.c:2097 UCX  DIAG  UCT tests also copy one-byte value from rocm recv memory to host memory, which may impact performance results
+[1722588781.659752] [ps:655046:0]     ucp_context.c:2190 UCX  INFO  Version 1.17.0 (loaded from /opt/ucx/lib/libucp.so.0)
+[1722588784.566871] [ps:655046:0]          parser.c:2314 UCX  INFO  UCX_* env variables: UCX_NET_DEVICES=mlx5_1:1 UCX_PROTO_INFO=y UCX_LOG_LEVEL=info
+[1722588785.740799] [ps:655046:0]      ucp_worker.c:1888 UCX  INFO    perftest inter-node cfg#2 rma(rc_mlx5/mlx5_1:1)
+[1722588785.755380] [ps:655046:0]   +---------------------------+-------------------------------------------------------------+
+[1722588785.755391] [ps:655046:0]   | perftest inter-node cfg#2 | remote memory write by ucp_put* from host memory to rocm    |
+[1722588785.755395] [ps:655046:0]   +---------------------------+------------------------------------+------------------------+
+[1722588785.755400] [ps:655046:0]   |                     0..2K | short                              | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.755402] [ps:655046:0]   |                 2049..inf | zero-copy                          | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.755405] [ps:655046:0]   +---------------------------+------------------------------------+------------------------+
+[1722588785.755468] [ps:655046:0]   +---------------------------+------------------------------------------------------------------------------+
+[1722588785.755471] [ps:655046:0]   | perftest inter-node cfg#2 | remote memory write by ucp_put*(fast-completion) from host memory to rocm    |
+[1722588785.755473] [ps:655046:0]   +---------------------------+-----------------------------------------------------+------------------------+
+[1722588785.755476] [ps:655046:0]   |                     0..2K | short                                               | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.755479] [ps:655046:0]   |                2049..8256 | copy-in                                             | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.755481] [ps:655046:0]   |                 8257..inf | zero-copy                                           | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.755508] [ps:655046:0]   +---------------------------+-----------------------------------------------------+------------------------+
+[1722588785.755562] [ps:655046:0]   +---------------------------+--------------------------------------------------------------------+
+[1722588785.755565] [ps:655046:0]   | perftest inter-node cfg#2 | remote memory write by ucp_put*(multi) from host memory to rocm    |
+[1722588785.755567] [ps:655046:0]   +---------------------------+-------------------------------------------+------------------------+
+[1722588785.755570] [ps:655046:0]   |                    0..587 | short                                     | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.755573] [ps:655046:0]   |                  588..inf | zero-copy                                 | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.755576] [ps:655046:0]   +---------------------------+-------------------------------------------+------------------------+
+[1722588785.755809] [ps:655046:0]      ucp_worker.c:1888 UCX  INFO    perftest self cfg#3 rma(self/memory rc_mlx5/mlx5_1:1)
+[1722588785.770022] [ps:655046:0]   +---------------------+-------------------------------------------------------------+
+[1722588785.770029] [ps:655046:0]   | perftest self cfg#3 | remote memory write by ucp_put* from host memory to rocm    |
+[1722588785.770033] [ps:655046:0]   +---------------------+------------------------------------+------------------------+
+[1722588785.770035] [ps:655046:0]   |               0..2K | short                              | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.770038] [ps:655046:0]   |           2049..inf | zero-copy                          | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.770040] [ps:655046:0]   +---------------------+------------------------------------+------------------------+
+[1722588785.770104] [ps:655046:0]   +---------------------+------------------------------------------------------------------------------+
+[1722588785.770107] [ps:655046:0]   | perftest self cfg#3 | remote memory write by ucp_put*(fast-completion) from host memory to rocm    |
+[1722588785.770109] [ps:655046:0]   +---------------------+-----------------------------------------------------+------------------------+
+[1722588785.770112] [ps:655046:0]   |               0..2K | short                                               | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.770115] [ps:655046:0]   |          2049..8256 | copy-in                                             | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.770118] [ps:655046:0]   |           8257..inf | zero-copy                                           | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.770121] [ps:655046:0]   +---------------------+-----------------------------------------------------+------------------------+
+[1722588785.770172] [ps:655046:0]   +---------------------+--------------------------------------------------------------------+
+[1722588785.770175] [ps:655046:0]   | perftest self cfg#3 | remote memory write by ucp_put*(multi) from host memory to rocm    |
+[1722588785.770177] [ps:655046:0]   +---------------------+-------------------------------------------+------------------------+
+[1722588785.770180] [ps:655046:0]   |              0..587 | short                                     | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.770182] [ps:655046:0]   |            588..inf | zero-copy                                 | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.770184] [ps:655046:0]   +---------------------+-------------------------------------------+------------------------+
+[1722588785.780923] [ps:655046:0]   +---------------------------+-------------------------------------------------------------------+
+[1722588785.780930] [ps:655046:0]   | perftest inter-node cfg#2 | remote memory read by ucp_get*(multi) into rocm/GPU0 from rocm    |
+[1722588785.780933] [ps:655046:0]   +---------------------------+------------------------------------------+------------------------+
+[1722588785.780936] [ps:655046:0]   |                         0 | copy-out                                 | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.780938] [ps:655046:0]   |                     1..64 | software emulation                       | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.780941] [ps:655046:0]   |                   65..inf | zero-copy                                | rc_mlx5/mlx5_1:1/path0 |
+[1722588785.780943] [ps:655046:0]   +---------------------------+------------------------------------------+------------------------+
+[thread 0]                28  38116.175 36737.178 36737.178    27873.67   27873.67          27          27
+[thread 0]                55  38115.524 38211.999 37461.181    26797.87   27334.96          26          27
+[thread 0]                82  38115.123 38095.112 37669.915    26880.09   27183.50          26          27
+[thread 0]               109  38115.173 38212.370 37804.284    26797.61   27086.88          26          26
+[thread 0]               136  38115.083 38094.891 37861.978    26880.24   27045.60          26          26
+[thread 0]               163  38115.173 38195.663 37917.251    26809.33   27006.18          26          26
+[thread 0]               190  38115.083 38221.333 37960.463    26791.32   26975.44          26          26
+```
+
+#### 3. check memory usage
+```bash
+sudo pcm-memory
+```
+```
+|---------------------------------------||---------------------------------------|
+|--             Socket  0             --||--             Socket  1             --|
+|---------------------------------------||---------------------------------------|
+|--     Memory Channel Monitoring     --||--     Memory Channel Monitoring     --|
+|---------------------------------------||---------------------------------------|
+|-- Mem Ch  0: Reads (MB/s):     5.94 --||-- Mem Ch  0: Reads (MB/s):     6.58 --|
+|--            Writes(MB/s):     5.91 --||--            Writes(MB/s):     6.49 --|
+|--      PMM Reads(MB/s)   :     0.00 --||--      PMM Reads(MB/s)   :     0.00 --|
+|--      PMM Writes(MB/s)  :     0.00 --||--      PMM Writes(MB/s)  :     0.00 --|
+|-- Mem Ch  2: Reads (MB/s):     5.96 --||-- Mem Ch  2: Reads (MB/s):     6.15 --|
+|--            Writes(MB/s):     5.91 --||--            Writes(MB/s):     6.07 --|
+|--      PMM Reads(MB/s)   :     0.00 --||--      PMM Reads(MB/s)   :     0.00 --|
+|--      PMM Writes(MB/s)  :     0.00 --||--      PMM Writes(MB/s)  :     0.00 --|
+|-- Mem Ch  3: Reads (MB/s):     5.96 --||-- Mem Ch  3: Reads (MB/s):     6.83 --|
+|--            Writes(MB/s):     5.90 --||--            Writes(MB/s):     6.77 --|
+|--      PMM Reads(MB/s)   :     0.00 --||--      PMM Reads(MB/s)   :     0.00 --|
+|--      PMM Writes(MB/s)  :     0.00 --||--      PMM Writes(MB/s)  :     0.00 --|
+|-- Mem Ch  5: Reads (MB/s):     5.98 --||-- Mem Ch  5: Reads (MB/s):     6.14 --|
+|--            Writes(MB/s):     5.92 --||--            Writes(MB/s):     6.08 --|
+|--      PMM Reads(MB/s)   :     0.00 --||--      PMM Reads(MB/s)   :     0.00 --|
+|--      PMM Writes(MB/s)  :     0.00 --||--      PMM Writes(MB/s)  :     0.00 --|
+|-- Mem Ch  6: Reads (MB/s):     5.98 --||-- Mem Ch  6: Reads (MB/s):     6.58 --|
+|--            Writes(MB/s):     5.91 --||--            Writes(MB/s):     6.49 --|
+|--      PMM Reads(MB/s)   :     0.00 --||--      PMM Reads(MB/s)   :     0.00 --|
+|--      PMM Writes(MB/s)  :     0.00 --||--      PMM Writes(MB/s)  :     0.00 --|
+|-- Mem Ch  8: Reads (MB/s):     5.98 --||-- Mem Ch  8: Reads (MB/s):     6.38 --|
+|--            Writes(MB/s):     5.91 --||--            Writes(MB/s):     6.34 --|
+|--      PMM Reads(MB/s)   :     0.00 --||--      PMM Reads(MB/s)   :     0.00 --|
+|--      PMM Writes(MB/s)  :     0.00 --||--      PMM Writes(MB/s)  :     0.00 --|
+|-- Mem Ch  9: Reads (MB/s):     5.98 --||-- Mem Ch  9: Reads (MB/s):     6.19 --|
+|--            Writes(MB/s):     5.93 --||--            Writes(MB/s):     6.08 --|
+|--      PMM Reads(MB/s)   :     0.00 --||--      PMM Reads(MB/s)   :     0.00 --|
+|--      PMM Writes(MB/s)  :     0.00 --||--      PMM Writes(MB/s)  :     0.00 --|
+|-- Mem Ch 11: Reads (MB/s):     5.96 --||-- Mem Ch 11: Reads (MB/s):     6.28 --|
+|--            Writes(MB/s):     5.92 --||--            Writes(MB/s):     6.16 --|
+|--      PMM Reads(MB/s)   :     0.00 --||--      PMM Reads(MB/s)   :     0.00 --|
+|--      PMM Writes(MB/s)  :     0.00 --||--      PMM Writes(MB/s)  :     0.00 --|
+|-- NODE 0 Mem Read (MB/s) :    47.74 --||-- NODE 1 Mem Read (MB/s) :    51.14 --|
+|-- NODE 0 Mem Write(MB/s) :    47.32 --||-- NODE 1 Mem Write(MB/s) :    50.49 --|
+|-- NODE 0 PMM Read (MB/s):      0.00 --||-- NODE 1 PMM Read (MB/s):      0.00 --|
+|-- NODE 0 PMM Write(MB/s):      0.00 --||-- NODE 1 PMM Write(MB/s):      0.00 --|
+|-- NODE 0 Memory (MB/s):       95.07 --||-- NODE 1 Memory (MB/s):      101.62 --|
+|---------------------------------------||---------------------------------------|
+|---------------------------------------||---------------------------------------|
+|--            System DRAM Read Throughput(MB/s):         98.88                --|
+|--           System DRAM Write Throughput(MB/s):         97.81                --|
+|--             System PMM Read Throughput(MB/s):          0.00                --|
+|--            System PMM Write Throughput(MB/s):          0.00                --|
+|--                 System Read Throughput(MB/s):         98.88                --|
+|--                System Write Throughput(MB/s):         97.81                --|
+|--               System Memory Throughput(MB/s):        196.69                --|
+|---------------------------------------||---------------------------------------|
+```
+
+### 2. CUDA Platform
+#### 1. Check if `nvidia_peermem` is correctly loaded
 ```bash
 sudo modprobe nvidia_peermem
 ```
@@ -80,7 +218,7 @@ sudo dkms unbuild nvidia/...
 sudo dkms build nvidia/...
 ```
 
-### 2. run the test
+#### 2. run the test
 ```bash
 /opt/ucx/bin/ucx_perftest -c 0
 ```
@@ -157,7 +295,7 @@ gives
 [thread 0]               164  88936.387 88935.852 71586.293    11513.92   14304.41          11          14
 ```
 
-### 3. check memory bandwidth used
+#### 3. check memory bandwidth used
 for Intel CPUs,
 ```bash
 sudo pcm-memory
