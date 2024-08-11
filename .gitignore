@@ -5,3 +5,4 @@ ruby_install_by_rvm.sh
 bundle/
 .bundle/
 .idea/
+.jekyll-metadata
