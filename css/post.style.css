@@ -1,4 +1,4 @@
-html, body, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline; background: transparent; font-family: "Open Sans",Helvetica,Arial,"Microsoft YaHei",sans-serif;}
+html, body, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend { margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline; background: transparent; font-family: "Noto Sans CJK SC",sans-serif;}
 body{margin:0; height: 100%; padding:0;}
 article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}
 audio,canvas,progress,video{display:inline-block;*display:inline;*zoom:1;vertical-align:baseline}
@@ -44,7 +44,7 @@ td:last-child{border-right:0}
 th{background-color:#f7f7f7;border-bottom:1px solid #d0d0d0;border-right:1px solid #d0d0d0}
 th:last-child{border-right:0}
 @media (min-width: 43.75em){body{font-size:1em;line-height:1.375}}
-h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5,h6,.h6{margin:.5rem 0 .5rem; font-weight: normal; font-family: "Source Han Sans","Open Sans",Helvetica,Arial,sans-serif;}
+h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5,h6,.h6{margin:.5rem 0 .5rem; font-weight: normal; font-family: "Noto Sans CJK SC","Source Han Sans",sans-serif;}
 h1,.h1{font-size:2em;line-height:1.25}
 @media (min-width: 43.75em){h1,.h1{font-size:2.5em;line-height:1.125}}
 /* @media (min-width: 56.25em){h1,.h1{font-size:3em;line-height:1.05}} */
@@ -65,13 +65,13 @@ blockquote{font-size:1.25em;line-height:1.25;padding:1% 2%}
 .header{background-color:seagreen;background-image:url("../img/touring.jpg");background-size:cover;background-position:center center;color:white;padding:0;height:3em}
 .header .container{padding:0;max-width:100%;margin-left:auto;margin-right:auto}
 .header .container:after{content:" ";display:block;clear:both}
-.header h1{margin:0;float:left;padding-left:2rem;font-size:1em;line-height:3em;font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:800;text-transform:uppercase}
+.header h1{margin:0;float:left;padding-left:2rem;font-size:1em;line-height:3em;font-family:"Noto Sans CJK SC",sans-serif;font-weight:800;text-transform:uppercase}
 .header h1 a{color:white;text-decoration:none}
 .post .postTitle{text-align:center;margin-top:2rem;margin-bottom:1rem}
 .post blockquote{clear:both;margin:2.5em 0;padding:0;line-height:1.8;position:relative}
 .post blockquote:before{content:"";position:absolute;top:-1.25em;background:seagreen;display:block;height:2px;width:150px;left:calc(50% - 75px)}
 .post blockquote:after{content:"";position:absolute;bottom:-1.25em;background:seagreen;display:block;height:2px;width:150px;left:calc(50% - 75px)}
-.post .meta{text-align:center;color:gray;font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:300}
+.post .meta{text-align:center;color:gray;font-family:"Noto Sans CJK SC",sans-serif;font-weight:300}
 .post figure{margin:3rem 0}
 .post figure figcaption{text-align:center;font-size:.938em;font-style:italic;color:#5e5e5e}
 .post figure img{margin:0 auto;display:block}.post img{margin-bottom:2rem}
@@ -85,7 +85,7 @@ blockquote{font-size:1.25em;line-height:1.25;padding:1% 2%}
 #post-link-trans { transition: all 0.3s ease-in-out; }
 
 .postNav{border-top:1px solid #e6e6e6;border-bottom:1px solid #e6e6e6;overflow:hidden}
-.postNav .prev,.postNav .next{display:block;width:100%;height:5rem;overflow:hidden;position:relative;font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:800;font-size:.938em;text-transform:uppercase;text-align:center}
+.postNav .prev,.postNav .next{display:block;width:100%;height:5rem;overflow:hidden;position:relative;font-family:"Noto Sans CJK SC",sans-serif;font-weight:800;font-size:.938em;text-transform:uppercase;text-align:center}
 .postNav .prev img,.postNav .next img{z-index:1;display:block;position:absolute;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);left:0;width:100%; .height:auto}
 .postNav .prev span,.postNav .next span{z-index:10;position:relative;padding:.5rem;position:absolute;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);width:100%;line-height:1.4}
 .postNav .prev.image,.postNav .next.image{text-decoration:none;color:white;text-shadow:1px 1px 3px rgba(0,0,0,0.8);padding:0 .5rem;position:relative;-webkit-transition:all 0.2s ease-in-out;transition:all 0.2s ease-in-out}
@@ -98,7 +98,7 @@ blockquote{font-size:1.25em;line-height:1.25;padding:1% 2%}
 .posts li:before{position:absolute;bottom:-2rem;left:0;background:#e6e6e6;height:2px;width:60px}
 .posts li a{text-decoration:none}
 .posts li a:hover{text-decoration:underline}
-.posts li .date{color:gray;font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:300;font-size:.8em}
+.posts li .date{color:gray;font-family:"Noto Sans CJK SC",sans-serif;font-weight:300;font-size:.8em}
 .posts li h3{margin:0 0 .5em}
 @media only screen and (min-width: 800px){
 	.content{padding-top:0;position:relative;z-index:1}
