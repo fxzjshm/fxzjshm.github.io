@@ -34,3 +34,5 @@ author:
 ```
 
 Reference: <https://pandoc.org/MANUAL.html#metadata-variables>
+
+<!-- more -->
