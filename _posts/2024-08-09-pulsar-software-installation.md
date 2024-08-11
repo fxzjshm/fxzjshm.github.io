@@ -186,6 +186,10 @@ pip install --config-settings=builddir=build .
 * <https://psrchive.sourceforge.net/index.shtml>
 * <https://dspsr.sourceforge.net/>
 
+## Tempo2
+
+* <https://bitbucket.org/psrsoft/tempo2>
+
 ## PulsarX + TransientX
 
 以安装到 `$PULSARX_PREFIX` 为例.  
