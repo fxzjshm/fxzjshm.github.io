@@ -205,23 +205,36 @@ sudo apt install libboost-all-dev libtool liblapack-dev
 注意 `libboost-dev` 不足以完整安装 Boost 库.  
 Notice that `libboost-dev` is not enough for a full Boost installation.
 
-另外, 还需安装 tempo2.  
-Moreover, tempo2 also need to be installed.
+另外, 还需安装 tempo2, 并需要添加到 `PATH`.  
+Moreover, tempo2 also need to be installed and added to `PATH`.
+
+YMW16 是可选的, 安装之后需要设置 `YMW16_DIR`.
+
+以下假定将 PlotX, XLibs, PulsarX, TransientX 安装到 `PULSARX_PREFIX`, 比如 `/opt/PulsarX`.  
+Here assumes installing PlotX, XLibs, PulsarX, TransientX into `PULSARX_PREFIX`, e.g. `/opt/PulsarX`.
+
+在目标文件夹下创建 `env.sh` 之类的文件并在运行之前 `source` 这个文件来自动调整 `PULSARX_PREFIX`, 设置其他软件的路径同理.  
+Create file like `env.sh` inside target directory and `source` it before executing other commands to automatically adjust `PULSARX_PREFIX`. Paths of other software can also be set like this.
 
 PulsarX 和 TransientX 有可能不能找到它们的依赖项 (XLibs, PlotX 等), 故用 `CPATH` 和 `LIBRARY_PATH` 来绕过这个问题.  
 Configure scripts of PulsarX & TransientX may not find its dependencies (XLibs, PlotX, etc.),
 so `CPATH` and `LIBRARY_PATH` is used as a workaround:
 
 ```bash
-# $PULSARX_PREFIX/env.sh
-export YMW16_DIR=${YMW16_PREFIX}
+# in $PULSARX_PREFIX/env.sh, e.g. /opt/PulsarX/env.sh
+export PULSARX_PREFIX="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 export PATH=$TEMPO2_PREFIX/bin:$PATH
 
-export PULSARX_PREFIX="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export CPATH=$PULSARX_PREFIX/include:$CPATH
 export LIBRARY_PATH=$PULSARX_PREFIX/lib:$LIBRARY_PATH
 export LD_LIBRARY_PATH=$PULSARX_PREFIX/lib:$LD_LIBRARY_PATH
 export PATH=$PULSARX_PREFIX/bin:$PATH
+```
+
+```bash
+# before using other commands: 
+source /opt/PulsarX/env.sh  # or in target path you choose
 ```
 
 开始构建, 参考命令:  
