@@ -307,3 +307,22 @@ index 05efd1c..2ea0355 100644
  ax_python_bin=$PYTHON_BIN
  if test x$ax_python_bin != x; then
 ```
+
+若出现找不到 boost_system 相关的库 (在 Ubuntu 18.04 上有报道), 可在 configure.ac 中加入 `-lboost_system`:  
+If cannot find symbols from boost_system (reported in Ubuntu 18.04), may add `-lboost_system` in configure.ac:  
+
+```diff
+diff --git a/configure.ac b/configure.ac
+index 1e9ba79..61e788e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -16,7 +16,7 @@ CXXFLAGS='-std=c++11 -O3'
+ LT_INIT
+ 
+ # Checks for libraries.
+-AX_BOOST_BASE([1.56], [LIBS="$LIBS -lboost_program_options -lboost_log"], [echo "Boost library was not found!";exit -1])
++AX_BOOST_BASE([1.56], [LIBS="$LIBS -lboost_program_options -lboost_log -lboost_system"], [echo "Boost library was not found!";exit -1])
+ AC_CHECK_LIB([cfitsio], [ffgky], [], [echo "cfitsio library was not found!";exit -1])
+ AC_CHECK_LIB([png], [png_set_flush], [], [echo "library not found!";exit -1])
+ AC_CHECK_LIB([fftw3], [fftw_malloc], [], [echo "library not found!";exit -1])
+```
