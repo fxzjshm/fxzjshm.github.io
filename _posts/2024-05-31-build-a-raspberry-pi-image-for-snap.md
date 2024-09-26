@@ -76,7 +76,55 @@ sudo make install
 
 创建 `/etc/systemd/system/katcpd.service`
 ```
-# To be done
+[Unit]
+Description=Start katcpd
+After=network.target
+
+[Service]
+ExecStart=tcpborphserver3 -b /bofs
+Restart=always
+RestartSec=60
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target
+```
+
+注: 此 systemd 配置由以下位于 `/etc/init.d/katcpd` 的脚本转换而来
+
+```bash
+#!/usr/bin/env bash
+
+
+start() {
+  echo "STARTING"
+  tcpborphserver3 -b /bofs -l /logs/tcpborphserver3.log
+}
+
+stop() {
+  echo "STOPPING"
+  pkill -9 tcpborphserver3
+}
+
+case "$1" in
+        start)
+                start
+                ;;
+        stop)
+                stop
+                ;;
+        restart)
+                stop
+                start
+                ;;
+        status)
+                echo "HI"
+                ;;
+        *)
+                echo "USAGE: $0 (start|stop|status|restart)"
+esac
+
+exit 0
 ```
 
 然后
@@ -172,8 +220,57 @@ Essentially just ensuring tcpborphserver3 starts automatically upon reboot. Here
 
 Create /etc/systemd/system/katcpd.service
 ```
-# Todo
+[Unit]
+Description=Start katcpd
+After=network.target
+
+[Service]
+ExecStart=tcpborphserver3 -b /bofs
+Restart=always
+RestartSec=60
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target
 ```
+
+Note: this systemd config is converted from a script in `/etc/init.d/katcpd`
+
+```bash
+#!/usr/bin/env bash
+
+
+start() {
+  echo "STARTING"
+  tcpborphserver3 -b /bofs -l /logs/tcpborphserver3.log
+}
+
+stop() {
+  echo "STOPPING"
+  pkill -9 tcpborphserver3
+}
+
+case "$1" in
+        start)
+                start
+                ;;
+        stop)
+                stop
+                ;;
+        restart)
+                stop
+                start
+                ;;
+        status)
+                echo "HI"
+                ;;
+        *)
+                echo "USAGE: $0 (start|stop|status|restart)"
+esac
+
+exit 0
+```
+
 Then
 ```bash
 sudo systemctl reload-daemon
