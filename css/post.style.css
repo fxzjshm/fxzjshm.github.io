@@ -17,7 +17,8 @@ h4{font-size:1em;line-height:1.5em;margin-top:1.5em;margin-bottom:1.5em}
 h5{font-size:0.83em;line-height:1.80723em;margin-top:1.80723em;margin-bottom:1.80723em}
 h6{font-size:0.67em;line-height:2.23881em;margin-top:2.23881em;margin-bottom:2.23881em}
 mark{background:#ff0;color:#000}
-p,pre{margin:0 0 15px 0; font-weight: normal;}
+p{margin: 0 0 0.3em 0; font-weight: normal;}
+pre{margin: 1em; font-weight: normal;}
 small{font-size:80%}
 sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
 sup{top:-0.5em}
