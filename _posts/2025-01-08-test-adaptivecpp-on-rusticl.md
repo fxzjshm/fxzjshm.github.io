@@ -116,9 +116,11 @@ SPIR-V WARNING:
 
 ## Some preliminary results (to be debugged)
 
+**TL;DR:** as long as not using shared memory & group functions, it should work fine.
+
 ### Missing feature when calling llvm-spirv
 
-* `SPV_EXT_shader_atomic_float_add` in `atomic_tests/fetch_op`
+#### `SPV_EXT_shader_atomic_float_add` in `atomic_tests/fetch_op`
 
 ```
 RequiresExtension: Feature requires the following SPIR-V extension:
@@ -130,7 +132,12 @@ unknown location(0): fatal error: in "atomic_tests/fetch_op": hipsycl::sycl::exc
 0: LLVMToSpirv: llvm-spirv invocation failed with exit code 19
 ```
 
-* `SPV_INTEL_subgroups` in `group_functions_tests/subgroup_shuffle_like<{char, unsigned int, float, double}>`
+Manually adding this flag fixes PoCL and Rusticl llvmpipe (for float32);
+GPU used here is gfx1035 so `cannot select %llvm.amdgcn.global.atomic.fadd`.
+
+See [AdaptiveCpp/AdaptiveCpp#1677](https://github.com/AdaptiveCpp/AdaptiveCpp/issues/1677)
+
+#### `SPV_INTEL_subgroups` in `group_functions_tests/subgroup_shuffle_like<{char, unsigned int, float, double}>`
 
 ```
 RequiresExtension: Feature requires the following SPIR-V extension:
@@ -143,6 +150,7 @@ unknown location(0): fatal error: in "group_functions_tests/subgroup_shuffle_lik
 ```
 
 ### extension_tests/cg_property_retarget (radeonsi)
+
 ```
 /home/fxzjshm/workspace/hipSYCL/tests/sycl/extensions.cpp(537): error: in "extension_tests/cg_property_retarget": check ptr[0] == 2 has failed [0 != 2]
 ```
@@ -153,6 +161,19 @@ unknown location(0): fatal error: in "group_functions_tests/subgroup_shuffle_lik
 /home/fxzjshm/workspace/hipSYCL/tests/sycl/extensions.cpp(694): error: in "extension_tests/prefetch_host": check shared_mem[i] == i + 1 has failed [0 != 1]
 ...
 /home/fxzjshm/workspace/hipSYCL/tests/sycl/extensions.cpp(694): error: in "extension_tests/prefetch_host": check shared_mem[i] == i + 1 has failed [4095 != 4096]
+```
+
+Reason: radeonsi haven't implemented `pipe_context::svm_migrate`.
+
+Stacktrace:
+
+```
+    AdaptiveCpp: usm->enqueue_prefetch
+->  clEnqueueMigrateMemINTEL
+->  opencl-intercept-layer: clEnqueueMigrateMemINTEL_EMU
+->  clEnqueueSVMMigrateMem
+->  Rusticl: PipeContext::svm_migrate
+->  radeonsi: pipe_context::svm_migrate (not implemented)
 ```
 
 ### extension_tests/buffers_over_usm_pointers (radeonsi)
@@ -230,8 +251,12 @@ unknown location(0): fatal error: in "marray_tests/marray_ops<short>": signal: S
 ...
 ```
 
+See [intel/opencl-intercept-layer#400](https://github.com/intel/opencl-intercept-layer/pull/400)
+
 ### usm_tests/prefetch (radeonsi)
 
 ```
 /home/fxzjshm/workspace/hipSYCL/tests/sycl/usm.cpp(419): error: in "usm_tests/prefetch": check shared_mem[i] == i + 1 has failed [0 != 1]
 ```
+
+Related: [intel/opencl-intercept-layer#401](https://github.com/intel/opencl-intercept-layer/issues/401)
