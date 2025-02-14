@@ -42,6 +42,8 @@ Install postfix; as there is no mail server, here configure it as local mode; ot
 编辑 `/etc/sudoers.d/mail-sysadmin` 并输入下面的内容, 注意将 admin 替换为你需要的用户.  
 Edit `/etc/sudoers.d/mail-sysadmin` and input the following lines, note: replace admin with user you want.
 
+<!-- more -->
+
 ```
 Defaults      mailto="admin@localhost"
 ```
