@@ -136,7 +136,7 @@ sudo systemctl enable --now katcpd
 接着试验一下启动脚本能否正常上传 .fpg 文件即可.
 
 ## 4. 进一步定制
-这里应该做你想要的进一步定制, 比如上传 `.fpg` 文件和启动脚本, 删掉不需要的软件之类的.
+这里应该做你想要的进一步定制, 比如上传 `.fpg` 文件和启动脚本, 安装网络时间同步软件 (比如 chrony), 删掉不需要的软件之类的.
 
 
 ## 5. 保存此镜像
@@ -279,7 +279,7 @@ sudo systemctl enable --now katcpd
 Next, test that startup scripts successfully upload FPG files.
 
 ## 4. Further Customization
-Here should perform further customization according to what you wish, including uploading .fpg files and writing startup scripts, removing unnecessary software, etc.
+Here should perform further customization according to what you wish, including uploading .fpg files and writing startup scripts, installing network time protocol (NTP) client (e,g, chrony), removing unnecessary software, etc.
 
 ## 5. Preserving This Image
 Hopefully haven’t missed anything important above. 
