@@ -8,10 +8,25 @@ tags: [Linux]
 ---
 
 # UCX bechmark
-## debug env vars
+## env vars
+Refer to their FAQ: <https://openucx.readthedocs.io/en/master/faq.html>
+
+* debug:
 ```bash
 export UCX_LOG_LEVEL=info
 export UCX_PROTO_INFO=y
+```
+
+* select device:
+```bash
+export UCX_NET_DEVICES=rocep65s0:1  # or sth. like mlx5_0:1
+```
+get device info from `ucx_info -d` & `lstopo`
+
+* select protocol (RoCE, TCP, etc.)
+  * note: for GPU RDMA, must enable `rocm_copy`/`cuda_copy`, otherwise `ucx_perftest` cannot allocate GPU memory for testing
+```bash
+export UCX_TLS=rc_v  # or tcp, shm, etc.
 ```
 
 ## compile UCX
@@ -36,6 +51,9 @@ export UCX_PROTO_INFO=y
 <!-- more -->
 
 If add another w1 <-> w2, it jitters much:
+
+<details>
+
 ```
 +--------------+--------------+------------------------------+---------------------+-----------------------+
 |              |              |       overhead (usec)        |   bandwidth (MB/s)  |  message rate (msg/s) |
@@ -58,9 +76,11 @@ If add another w1 <-> w2, it jitters much:
 [thread 0]               103 110529.342 1050885.499 279415.293      974.42    3664.80           1           4
 ```
 
+</details>
+
 ## GPU RDMA: pursai-9654 <-> gpu8
-Notice, this may require PCIe switch & professional GPU for NVIDIA.
-Not sure situation for AMD GPU.
+Notice, this may require PCIe switch.
+For AMD GPU, seems no firmware lock; in contrary, requires professional GPU for NVIDIA.
 
 ### 1. ROCm Platform
 #### 1. Check Firmware Setup
@@ -68,14 +88,17 @@ Enable PCIe resizable bar & tune MMIO address setup, refer to: <https://github.c
 
 Bar address of GPUs should be < 44 bits for gfx900 / gfx906 devices, otherwise segmentation fault will still happen.
 
-#### 2. run the test
+#### 2. run test
 ```bash
 /opt/ucx/bin/ucx_perftest -c 0
 ```
 ```bash
 /opt/ucx/bin/ucx_perftest -t ucp_get 10.0.1.2 -s 1073741824 -c 3 -w 3 -n 10000 -m rocm
 ```
-gives
+gives 26 GB/s on 400 GbE (limited by PCIe 4 of GPU) w/o host memory activity.
+
+<details>
+
 ```
 +--------------+--------------+------------------------------+---------------------+-----------------------+
 |              |              |        latency (usec)        |   bandwidth (MB/s)  |  message rate (msg/s) |
@@ -142,10 +165,15 @@ gives
 [thread 0]               190  38115.083 38221.333 37960.463    26791.32   26975.44          26          26
 ```
 
+</details>
+
 #### 3. check memory usage
 ```bash
 sudo pcm-memory
 ```
+
+<details>
+
 ```
 |---------------------------------------||---------------------------------------|
 |--             Socket  0             --||--             Socket  1             --|
@@ -201,6 +229,8 @@ sudo pcm-memory
 |---------------------------------------||---------------------------------------|
 ```
 
+</details>
+
 ### 2. CUDA Platform
 #### 1. Check if `nvidia_peermem` is correctly loaded
 ```bash
@@ -211,21 +241,25 @@ sometimes it gives symbol mismatch in `dmesg`:
 [31832.683273] nvidia_peermem: disagrees about version of symbol ib_register_peer_memory_client
 [31832.683276] nvidia_peermem: Unknown symbol ib_register_peer_memory_client (err -22)
 ```
-this is possibly caused by installing Mellanox OFED driver after installing NVIDIA driver, and NVIDIA driver is using `ib_*` in kernel. Just rebuild NVIDIA driver:
+this is possibly caused by installing Mellanox OFED driver after installing NVIDIA driver, and NVIDIA driver is using `ib_*` in kernel. Rebuild NVIDIA driver:
 ```bash
 sudo dkms status
 sudo dkms unbuild nvidia/...
 sudo dkms build nvidia/...
 ```
+Why always so many weird things for NVIDIA ??
 
-#### 2. run the test
+#### 2. run test
 ```bash
 /opt/ucx/bin/ucx_perftest -c 0
 ```
 ```bash
 /opt/ucx/bin/ucx_perftest -t ucp_put_bw 10.0.1.2 -s 1073741824 -c 3 -w 3 -n 10000 -m cuda
 ```
-gives
+gives 11.5 GB/s on 100 GbE w/o host memory activity.
+
+<details>
+
 ```
 +--------------+--------------+------------------------------+---------------------+-----------------------+
 |              |              |       overhead (usec)        |   bandwidth (MB/s)  |  message rate (msg/s) |
@@ -295,12 +329,17 @@ gives
 [thread 0]               164  88936.387 88935.852 71586.293    11513.92   14304.41          11          14
 ```
 
+</details>
+
 #### 3. check memory bandwidth used
 for Intel CPUs,
 ```bash
 sudo pcm-memory
 ```
 gives something like
+
+<details>
+
 ```
 |---------------------------------------||---------------------------------------|
 |--             Socket  0             --||--             Socket  1             --|
@@ -355,3 +394,5 @@ gives something like
 |--               System Memory Throughput(MB/s):        462.25                --|
 |---------------------------------------||---------------------------------------|
 ```
+
+</details>
