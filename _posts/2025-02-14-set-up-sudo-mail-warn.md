@@ -67,4 +67,9 @@ Install dovecot; for minimal changes, use PAM auth method, which means use syste
 定时将远程 `/var/mail` 下的文件传回本地, 其余操作一致.  
 Transfer remote file in `/var/mail` to local regularly, other steps are same.
 
-TODO: transfer service file.
+例如, 对于需要使用密码保护的密钥访问服务器的情形, 可考虑在本地新建定时任务用来定时下载, 参考命令:  
+e.g. for server accessible with password-protected ssh keys only, consider create a cron to download, reference command:
+
+```bash
+chmod 644 /home/user/mail/server && SSH_AUTH_SOCK=/run/user/1000/gcr/ssh rsync -axHAXvPz server:/var/mail/admin /home/user/mail/server && chmod -w /home/user/mail/server
+```
