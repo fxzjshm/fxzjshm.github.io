@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Set up sudo mail warn
-date: 2025-02-02
+date: 2025-02-14
 author: Fxzjshm
 category: Linux
 tags: [Linux]
