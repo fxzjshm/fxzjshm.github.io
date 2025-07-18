@@ -10,6 +10,8 @@ tags: [Linux, CASPER, SNAP]
 对于树莓派, 参见 <https://fxzjshm.github.io/blog/build-a-raspberry-pi-image-for-snap/>.  
 For Raspberry Pi, see <https://fxzjshm.github.io/blog/build-a-raspberry-pi-image-for-snap/>.
 
+本文对 katcp 的修改对应仓库为 <https://github.com/fxzjshm/katcp_devel/tree/loongson-2k0300-devel>.
+
 ## 0. 引言
 
 SNAP (Smart Network ADC Processor) 是 CASPER 开发的低成本采样装置, 更多信息可见 <https://github.com/casper-astro/casper-hardware/blob/master/FPGA_Hosts/SNAP/README.md>. 通常情况下需要使用树莓派来驱动 SNAP, 但一些已有的镜像对应的树莓派版本已经不再销售, 可考虑其他单板计算机来控制 SNAP, 例如龙芯 2K0300 先锋派.
