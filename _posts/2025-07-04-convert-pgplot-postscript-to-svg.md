@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Set up sudo mail warn
+title: 将 PostScript 图 "无损" 转换为 SVG | Convert PostScript to SVG "losslessly"
 date: 2025-07-04
 author: Fxzjshm
 category: Linux
