@@ -39,6 +39,7 @@ git checkout py310-dev  # or py27, py38-dev, ...
 经验上 `py27` 分支较为稳定, 但较新的系统可能已经不提供 Python 2.7;
 `py38-dev` 与 `py310-dev` 较新, 但存在变量/函数命名前后不一致、接口更改等问题,
 可能需要手动修复 bug, 已有代码可能需要移植; 根据一些反馈, `py38` 分支可能存在问题.
+对于 `py310-dev` 中存在的部分语法问题, 已将个人已知的更改上传到 <https://github.com/fxzjshm/casperfpga/tree/fix-syntax>.
 
 根据习惯和需求, 进入 Python 虚拟环境用 pip 安装, 或用 pip 全局安装;
 若可能对源码进行修改, 推荐使用
@@ -186,7 +187,8 @@ git checkout py310-dev # Or use py27, py38-dev, etc.
 ```
 
 Experience has shown the `py27` branch to be stable, though newer systems may no longer support Python 2.7;
-the branches like `py38-dev` and `py310-dev` are recent but come with issues like inconsistent variable naming, interface changes, etc., which require manually fixing bugs and potentially porting code; based on feedback, there were also problems reported regarding 'py38'.
+the branches like `py38-dev` and `py310-dev` are recent but come with issues like inconsistent variable naming, interface changes, etc., which require manually fixing bugs and potentially porting code; based on feedback, there were also problems reported regarding `py38`.
+For issues in `py310-dev`, known fixes have been uploaded to <https://github.com/fxzjshm/casperfpga/tree/fix-syntax>.
 
 According to personal preference and requirements, enter a python virtual environment to install via pip or do global installation via pip; if source modifications are anticipated, recommend using
 ```bash
