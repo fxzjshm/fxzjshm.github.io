@@ -7,6 +7,9 @@ category: Radio Astronomy
 tags: [Linux, CASPER, SNAP]
 ---
 
+对于树莓派, 参见 <https://fxzjshm.github.io/blog/build-a-raspberry-pi-image-for-snap/>.  
+For Raspberry Pi, see <https://fxzjshm.github.io/blog/build-a-raspberry-pi-image-for-snap/>.
+
 ## 0. 引言
 
 SNAP (Smart Network ADC Processor) 是 CASPER 开发的低成本采样装置, 更多信息可见 <https://github.com/casper-astro/casper-hardware/blob/master/FPGA_Hosts/SNAP/README.md>. 通常情况下需要使用树莓派来驱动 SNAP, 但一些已有的镜像对应的树莓派版本已经不再销售, 可考虑其他单板计算机来控制 SNAP, 例如龙芯 2K0300 先锋派.
@@ -384,72 +387,7 @@ esac
 exit 0
 ```
 
-<details>
-<summary>备份: systemd 服务, 以及原版 katcpd</summary>
-
-systemd service
-
-创建 `/etc/systemd/system/katcpd.service`
-```
-[Unit]
-Description=Start katcpd
-After=network.target
-
-[Service]
-ExecStart=tcpborphserver3 -b /bofs
-Restart=always
-RestartSec=60
-StartLimitInterval=0
-
-[Install]
-WantedBy=multi-user.target
-```
-
-注: 此 systemd 配置由以下位于 `/etc/init.d/katcpd` 的脚本转换而来
-
-```bash
-#!/usr/bin/env bash
-
-
-start() {
-  echo "STARTING"
-  #tcpborphserver3 -b /bofs -l /logs/tcpborphserver3.log
-  sh -c "tcpborphserver3 -b /bofs -l /logs/tcpborphserver3.log -f" &
-}
-
-stop() {
-  echo "STOPPING"
-  pkill -9 tcpborphserver3
-}
-
-case "$1" in
-        start)
-                start
-                ;;
-        stop)
-                stop
-                ;;
-        restart)
-                stop
-                start
-                ;;
-        status)
-                echo "HI"
-                ;;
-        *)
-                echo "USAGE: $0 (start|stop|status|restart)"
-esac
-
-exit 0
-```
-
-然后
-```bash
-sudo systemctl reload-daemon
-sudo systemctl enable --now katcpd
-```
-
-</details>
+备份: systemd 服务, 以及原版 katcpd: <https://fxzjshm.github.io/blog/build-a-raspberry-pi-image-for-snap/>
 
 设定开机自启动: `/etc/local.d/katcp.start`:
 
